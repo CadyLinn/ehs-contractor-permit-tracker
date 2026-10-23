@@ -1,0 +1,53 @@
+table StatusLog
+	lineageTag: 07136012-1f12-40d7-8a1b-d474c3c24e5e
+
+	measure 'Status Changes Logged' = COUNTROWS ( StatusLog )
+		formatString: 0
+		lineageTag: 6347103f-a2fa-4589-9b52-f12250fd023a
+
+	column PermitNo
+		dataType: string
+		lineageTag: b8e1821c-a62c-4dac-b849-cc1f83fb36fb
+		summarizeBy: none
+		sourceColumn: PermitNo
+
+	column FromStatus
+		dataType: string
+		lineageTag: 2e7eb318-44e0-4e6f-bad8-0d7aa1c0292c
+		summarizeBy: none
+		sourceColumn: FromStatus
+
+	column ToStatus
+		dataType: string
+		lineageTag: 5c807d82-0ba3-4937-bc4e-27e5918d864d
+		summarizeBy: none
+		sourceColumn: ToStatus
+
+	column Comment
+		dataType: string
+		lineageTag: 9acc984c-6137-45a3-a354-ad7363b2781b
+		summarizeBy: none
+		sourceColumn: Comment
+
+	column ChangedAt
+		dataType: dateTime
+		formatString: yyyy/mm/dd
+		lineageTag: 6408e98d-ffce-4dc5-85e2-b027138a51c3
+		summarizeBy: none
+		sourceColumn: ChangedAt
+
+	partition StatusLog = m
+		mode: import
+		source =
+				let
+				    Source = SharePoint.Tables("https://YOUR-TENANT.sharepoint.com/sites/YOUR-SITE", [ApiVersion = 15]),
+				    Items = Source{[Title = "StatusLog"]}[Items],
+				    Picked = Table.SelectColumns(Items, {"Title", "FromStatus", "ToStatus", "Comment", "Created"}, MissingField.UseNull),
+				    Renamed = Table.RenameColumns(Picked, {{"Title", "PermitNo"}, {"Created", "ChangedAt"}}),
+				    Local = Table.TransformColumns(Renamed, {{"ChangedAt", (v) => if v = null then null else DateTimeZone.RemoveZone(DateTimeZone.SwitchZone(DateTime.AddZone(DateTime.From(v), 0), 8)), type datetime}}),
+				    Typed = Table.TransformColumnTypes(Local, {{"PermitNo", type text}, {"FromStatus", type text}, {"ToStatus", type text}, {"Comment", type text}})
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table
+

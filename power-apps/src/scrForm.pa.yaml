@@ -1,0 +1,218 @@
+# ************************************************************************************************
+# Warning: YAML source code for Canvas Apps should only be used to review changes made within Power Apps Studio and for minor edits (Preview).
+# Use the maker portal to create and edit your Power Apps.
+# 
+# The schema file for Canvas Apps is available at https://go.microsoft.com/fwlink/?linkid=2304907
+# 
+# For more information, visit https://go.microsoft.com/fwlink/?linkid=2292623
+# ************************************************************************************************
+Screens:
+  scrForm:
+    Properties:
+      LoadingSpinnerColor: =RGBA(56, 96, 178, 1)
+      OnVisible: =Reset(txtTitle); Reset(drpContractor); Reset(drpArea); Reset(drpWorkType); Reset(dpStart); Reset(dpEnd); Reset(txtWorkers); Reset(chkSafety)
+    Children:
+      - txtWorkers:
+          Control: Classic/TextInput@2.3.2
+          Properties:
+            BorderColor: =RGBA(0, 18, 107, 1)
+            Default: =Coalesce(Text(varPermit.Workers), "1")
+            Font: =Font.'Open Sans'
+            HoverBorderColor: =RGBA(0, 18, 107, 1)
+            HoverFill: =RGBA(186, 202, 226, 1)
+            Width: =120
+            X: =200
+            Y: =400
+      - dpEnd:
+          Control: Classic/DatePicker@2.6.0
+          Properties:
+            BorderColor: =RGBA(0, 18, 107, 1)
+            DefaultDate: =Coalesce(varPermit.EndDate, Today())
+            Font: =Font.'Open Sans'
+            IconBackground: =RGBA(56, 96, 178, 1)
+            IconFill: =RGBA(255, 255, 255, 1)
+            Width: =200
+            X: =420
+            Y: =340
+      - dpStart:
+          Control: Classic/DatePicker@2.6.0
+          Properties:
+            BorderColor: =RGBA(0, 18, 107, 1)
+            DefaultDate: =Coalesce(varPermit.StartDate, Today())
+            Font: =Font.'Open Sans'
+            IconBackground: =RGBA(56, 96, 178, 1)
+            IconFill: =RGBA(255, 255, 255, 1)
+            Width: |+
+              =200
+            X: =200
+            Y: =340
+      - drpWorkType:
+          Control: Classic/DropDown@2.3.1
+          Properties:
+            BorderColor: =RGBA(0, 18, 107, 1)
+            ChevronBackground: =RGBA(56, 96, 178, 1)
+            ChevronFill: =RGBA(255, 255, 255, 1)
+            ChevronHoverBackground: =ColorFade(RGBA(56, 96, 178, 1), -20%)
+            ChevronHoverFill: =RGBA(255, 255, 255, 1)
+            Default: =varPermit.WorkType
+            Font: =Font.'Open Sans'
+            HoverFill: =RGBA(186, 202, 226, 1)
+            Items: =["Hot Work","Work at Height","Confined Space","Electrical","General"]
+            Items.Value: =Value
+            PressedColor: =RGBA(255, 255, 255, 1)
+            PressedFill: =RGBA(0, 18, 107, 1)
+            SelectionColor: =RGBA(255, 255, 255, 1)
+            SelectionFill: =RGBA(56, 96, 178, 1)
+            Width: =400
+            X: =200
+            Y: =280
+      - drpArea:
+          Control: Classic/DropDown@2.3.1
+          Properties:
+            BorderColor: =RGBA(0, 18, 107, 1)
+            ChevronBackground: =RGBA(56, 96, 178, 1)
+            ChevronFill: =RGBA(255, 255, 255, 1)
+            ChevronHoverBackground: =ColorFade(RGBA(56, 96, 178, 1), -20%)
+            ChevronHoverFill: =RGBA(255, 255, 255, 1)
+            Default: =varPermit.Area
+            Font: =Font.'Open Sans'
+            HoverFill: =RGBA(186, 202, 226, 1)
+            Items: =["Cleanroom","Warehouse","Office","Utility Room","Rooftop","Loading Dock"]
+            Items.Value: =Value
+            PressedColor: =RGBA(255, 255, 255, 1)
+            PressedFill: =RGBA(0, 18, 107, 1)
+            SelectionColor: =RGBA(255, 255, 255, 1)
+            SelectionFill: =RGBA(56, 96, 178, 1)
+            Width: =400
+            X: =200
+            Y: =220
+      - drpContractor:
+          Control: Classic/DropDown@2.3.1
+          Properties:
+            BorderColor: =RGBA(0, 18, 107, 1)
+            ChevronBackground: =RGBA(56, 96, 178, 1)
+            ChevronFill: =RGBA(255, 255, 255, 1)
+            ChevronHoverBackground: =ColorFade(RGBA(56, 96, 178, 1), -20%)
+            ChevronHoverFill: =RGBA(255, 255, 255, 1)
+            Default: =varPermit.Contractor
+            Font: =Font.'Open Sans'
+            HoverFill: =RGBA(186, 202, 226, 1)
+            Items: =Sort(Contractors, Title)
+            Items.Value: =Title
+            PressedColor: =RGBA(255, 255, 255, 1)
+            PressedFill: =RGBA(0, 18, 107, 1)
+            SelectionColor: =RGBA(255, 255, 255, 1)
+            SelectionFill: =RGBA(56, 96, 178, 1)
+            Width: =400
+            X: =200
+            Y: =160
+      - txtTitle:
+          Control: Classic/TextInput@2.3.2
+          Properties:
+            BorderColor: =RGBA(0, 18, 107, 1)
+            Default: =varPermit.Title
+            Font: =Font.'Open Sans'
+            HintText: ="例如：管線焊接"
+            HoverBorderColor: =RGBA(0, 18, 107, 1)
+            HoverFill: =RGBA(186, 202, 226, 1)
+            X: |+
+              =200
+            Y: =100
+      - lblFormTitle:
+          Control: Label@2.5.1
+          Properties:
+            BorderColor: =RGBA(0, 18, 107, 1)
+            Font: =Font.'Open Sans'
+            Text: =If(IsBlank(varPermit), "新增施工申請", "編輯 WP-" & Text(varPermit.ID, "0000"))
+            Width: =400
+            X: =40
+            Y: =30
+      - chkSafety:
+          Control: Classic/CheckBox@2.1.0
+          Properties:
+            BorderColor: =RGBA(0, 18, 107, 1)
+            CheckboxBorderColor: =RGBA(0, 18, 107, 1)
+            CheckmarkFill: =RGBA(0, 0, 0, 1)
+            Default: =varPermit.SafetyChecklist = "Yes"
+            Font: =Font.'Open Sans'
+            HoverColor: =RGBA(0, 18, 107, 1)
+            Text: ="安全檢查表已完成"
+            Width: =400
+            X: =200
+            Y: =460
+      - btnCancel:
+          Control: Classic/Button@2.2.0
+          Properties:
+            BorderColor: =ColorFade(Self.Fill, -15%)
+            Color: =RGBA(255, 255, 255, 1)
+            DisabledBorderColor: =RGBA(166, 166, 166, 1)
+            Fill: =RGBA(56, 96, 178, 1)
+            Font: =Font.'Open Sans'
+            HoverBorderColor: =ColorFade(Self.BorderColor, 20%)
+            HoverColor: =RGBA(255, 255, 255, 1)
+            HoverFill: =ColorFade(RGBA(56, 96, 178, 1), -20%)
+            OnSelect: =Back()
+            PressedBorderColor: =Self.Fill
+            PressedColor: =Self.Fill
+            PressedFill: =Self.Color
+            Text: ="取消"
+            X: =380
+            Y: =530
+      - btnSave:
+          Control: Classic/Button@2.2.0
+          Properties:
+            BorderColor: =ColorFade(Self.Fill, -15%)
+            Color: =RGBA(255, 255, 255, 1)
+            DisabledBorderColor: =RGBA(166, 166, 166, 1)
+            Fill: =RGBA(56, 96, 178, 1)
+            Font: =Font.'Open Sans'
+            HoverBorderColor: =ColorFade(Self.BorderColor, 20%)
+            HoverColor: =RGBA(255, 255, 255, 1)
+            HoverFill: =ColorFade(RGBA(56, 96, 178, 1), -20%)
+            OnSelect: |-
+              =If(
+                  IsBlank(txtTitle.Text) || IsBlank(drpContractor.Selected.Title),
+                      Notify("請填寫工程內容與承包商", NotificationType.Error),
+                  dpEnd.SelectedDate < dpStart.SelectedDate,
+                      Notify("結束日期不可早於開始日期", NotificationType.Error),
+                  drpWorkType.Selected.Value = "Hot Work" && !chkSafety.Value,
+                      Notify("動火作業須先完成安全檢查表", NotificationType.Error),
+                  Set(varIsNew, IsBlank(varPermit));
+                  Set(
+                      varPermit,
+                      Patch(
+                          WorkPermits,
+                          If(varIsNew, Defaults(WorkPermits), varPermit),
+                          {
+                              Title: txtTitle.Text,
+                              Contractor: drpContractor.Selected.Title,
+                              Area: drpArea.Selected.Value,
+                              WorkType: drpWorkType.Selected.Value,
+                              RiskLevel: If(
+                                  drpWorkType.Selected.Value in ["Hot Work", "Work at Height", "Confined Space"], "High",
+                                  drpWorkType.Selected.Value = "Electrical", "Medium",
+                                  "Low"
+                              ),
+                              StartDate: dpStart.SelectedDate,
+                              EndDate: dpEnd.SelectedDate,
+                              Workers: Value(txtWorkers.Text),
+                              SafetyChecklist: If(chkSafety.Value, "Yes", "No"),
+                              Status: If(varIsNew, "Draft", varPermit.Status)
+                          }
+                      )
+                  );
+                  If(varIsNew,
+                      Patch(StatusLog, Defaults(StatusLog), {
+                          Title: "WP-" & Text(varPermit.ID, "0000"),
+                          FromStatus: "", ToStatus: "Draft", Comment: "建立申請"
+                      })
+                  );
+                  Notify("已儲存 WP-" & Text(varPermit.ID, "0000"), NotificationType.Success);
+                  Navigate(scrDetail)
+              )
+            PressedBorderColor: =Self.Fill
+            PressedColor: =Self.Fill
+            PressedFill: =Self.Color
+            Text: ="儲存"
+            X: =200
+            Y: =530

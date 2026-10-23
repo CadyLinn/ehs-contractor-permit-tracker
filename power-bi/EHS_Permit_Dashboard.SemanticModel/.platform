@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "SemanticModel",
+    "displayName": "EHS_Permit_Dashboard"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "0f2efa12-b615-4f6a-8e4e-4ba1bcf2b1a1"
+  }
+}

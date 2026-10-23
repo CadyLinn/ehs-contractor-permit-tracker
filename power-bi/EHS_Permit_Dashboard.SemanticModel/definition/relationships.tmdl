@@ -1,0 +1,8 @@
+relationship rel_Permit_Contractor
+	fromColumn: WorkPermits.Contractor
+	toColumn: Contractors.Title
+
+relationship rel_Log_Permit
+	fromColumn: StatusLog.PermitNo
+	toColumn: WorkPermits.PermitNo
+

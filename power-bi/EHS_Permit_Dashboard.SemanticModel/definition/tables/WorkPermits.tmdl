@@ -1,0 +1,134 @@
+table WorkPermits
+	lineageTag: 640db737-3a8a-47a9-9dfe-3bb487b05a12
+
+	measure 'Permit Count' = COUNTROWS ( WorkPermits )
+		formatString: 0
+		lineageTag: c090e6e8-b445-4771-9498-b96cc2cb7c96
+
+	measure 'Active Permits' = CALCULATE ( COUNTROWS ( WorkPermits ), WorkPermits[Status] IN { "Approved", "In Progress" } )
+		formatString: 0
+		lineageTag: c03e8a4b-ea9b-4cf8-b86b-b73c44a1ea3e
+
+	measure 'Pending Review' = CALCULATE ( COUNTROWS ( WorkPermits ), WorkPermits[Status] IN { "Submitted", "EHS Review" } )
+		formatString: 0
+		lineageTag: 58927412-9913-4e56-b8e1-1d6b6b8ba91f
+
+	measure 'Overdue Permits' =
+			CALCULATE (
+			    COUNTROWS ( WorkPermits ),
+			    WorkPermits[EndDate] < TODAY (),
+			    NOT ( WorkPermits[Status] IN { "Closed", "Rejected" } )
+			)
+		formatString: 0
+		lineageTag: a68121a2-9f0f-4f14-a525-13bfba93f689
+
+	measure 'High-Risk Work Today' =
+			CALCULATE (
+			    COUNTROWS ( WorkPermits ),
+			    WorkPermits[RiskLevel] = "High",
+			    WorkPermits[StartDate] <= TODAY (),
+			    WorkPermits[EndDate] >= TODAY (),
+			    WorkPermits[Status] IN { "Approved", "In Progress" }
+			)
+		formatString: 0
+		lineageTag: e8e7cda1-4161-4790-a0d9-2506d4cdcb2b
+
+	measure 'Days Overdue' =
+			VAR e = MAX ( WorkPermits[EndDate] )
+			VAR s = MAX ( WorkPermits[Status] )
+			RETURN
+			    IF ( NOT ISBLANK ( e ) && e < TODAY () && NOT ( s IN { "Closed", "Rejected" } ), INT ( TODAY () - e ) )
+		formatString: 0
+		lineageTag: 6c6898ee-1f08-4dd8-9075-1ee7b0a145a2
+
+	column PermitNo
+		dataType: string
+		lineageTag: 710030ba-8ee3-4ecd-a0e2-b5cbed46c920
+		summarizeBy: none
+		sourceColumn: PermitNo
+
+	column Title
+		dataType: string
+		lineageTag: 5933a389-9988-4659-8b3c-66ecd10c594b
+		summarizeBy: none
+		sourceColumn: Title
+
+	column Contractor
+		dataType: string
+		lineageTag: b01275ef-b378-4ffc-8a5f-41409759f579
+		summarizeBy: none
+		sourceColumn: Contractor
+
+	column Area
+		dataType: string
+		lineageTag: 655133fd-39bb-4799-91ae-f1260fd26588
+		summarizeBy: none
+		sourceColumn: Area
+
+	column WorkType
+		dataType: string
+		lineageTag: 97b8e289-3d27-41db-aa9a-826266a6d999
+		summarizeBy: none
+		sourceColumn: WorkType
+
+	column RiskLevel
+		dataType: string
+		lineageTag: 0fdb6b62-e09a-4cfc-ae97-a175a38b289b
+		summarizeBy: none
+		sourceColumn: RiskLevel
+
+	column StartDate
+		dataType: dateTime
+		formatString: yyyy/mm/dd
+		lineageTag: 5a15c965-f93a-44c3-9c80-cb13804a1611
+		summarizeBy: none
+		sourceColumn: StartDate
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column EndDate
+		dataType: dateTime
+		formatString: yyyy/mm/dd
+		lineageTag: 2554048b-bd95-440a-85e1-c1817bd6ec26
+		summarizeBy: none
+		sourceColumn: EndDate
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column Workers
+		dataType: int64
+		formatString: 0
+		lineageTag: 1cba9f3d-0432-4fe0-b524-928a2f4414e1
+		summarizeBy: sum
+		sourceColumn: Workers
+
+	column SafetyChecklist
+		dataType: string
+		lineageTag: 1206ccd8-db06-4d1b-8dcd-7a8a049071e1
+		summarizeBy: none
+		sourceColumn: SafetyChecklist
+
+	column Status
+		dataType: string
+		lineageTag: cdee1b78-4566-449f-a95f-75ef09edb855
+		summarizeBy: none
+		sourceColumn: Status
+
+	partition WorkPermits = m
+		mode: import
+		source =
+				let
+				    Source = SharePoint.Tables("https://YOUR-TENANT.sharepoint.com/sites/YOUR-SITE", [ApiVersion = 15]),
+				    Items = Source{[Title = "WorkPermits"]}[Items],
+				    Named = Table.RenameColumns(Items, {{"field_1", "Contractor"}, {"field_2", "Area"}, {"field_3", "WorkType"}, {"field_4", "RiskLevel"}, {"field_5", "StartDate"}, {"field_6", "EndDate"}, {"field_7", "Workers"}, {"field_8", "SafetyChecklist"}, {"field_9", "Status"}}, MissingField.Ignore),
+				    Picked = Table.SelectColumns(Named, {"Id", "Title", "Contractor", "Area", "WorkType", "RiskLevel", "StartDate", "EndDate", "Workers", "SafetyChecklist", "Status"}, MissingField.UseNull),
+				    ToLocalDate = (v) => if v = null then null else Date.From(DateTimeZone.SwitchZone(DateTime.AddZone(DateTime.From(v), 0), 8)),
+				    Dated = Table.TransformColumns(Picked, {{"StartDate", ToLocalDate, type date}, {"EndDate", ToLocalDate, type date}}),
+				    WithNo = Table.AddColumn(Dated, "PermitNo", each "WP-" & Text.PadStart(Text.From([Id]), 4, "0"), type text),
+				    Typed = Table.TransformColumnTypes(WithNo, {{"Title", type text}, {"Contractor", type text}, {"Area", type text}, {"WorkType", type text}, {"RiskLevel", type text}, {"Workers", Int64.Type}, {"SafetyChecklist", type text}, {"Status", type text}}),
+				    Result = Table.SelectColumns(Typed, {"PermitNo", "Title", "Contractor", "Area", "WorkType", "RiskLevel", "StartDate", "EndDate", "Workers", "SafetyChecklist", "Status"})
+				in
+				    Result
+
+	annotation PBI_ResultType = Table
+

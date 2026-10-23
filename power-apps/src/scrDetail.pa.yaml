@@ -1,0 +1,229 @@
+# ************************************************************************************************
+# Warning: YAML source code for Canvas Apps should only be used to review changes made within Power Apps Studio and for minor edits (Preview).
+# Use the maker portal to create and edit your Power Apps.
+# 
+# The schema file for Canvas Apps is available at https://go.microsoft.com/fwlink/?linkid=2304907
+# 
+# For more information, visit https://go.microsoft.com/fwlink/?linkid=2292623
+# ************************************************************************************************
+Screens:
+  scrDetail:
+    Properties:
+      LoadingSpinnerColor: =RGBA(56, 96, 178, 1)
+    Children:
+      - btnBack:
+          Control: Classic/Button@2.2.0
+          Properties:
+            BorderColor: =ColorFade(Self.Fill, -15%)
+            Color: =RGBA(255, 255, 255, 1)
+            DisabledBorderColor: =RGBA(166, 166, 166, 1)
+            Fill: =RGBA(56, 96, 178, 1)
+            Font: =Font.'Open Sans'
+            HoverBorderColor: =ColorFade(Self.BorderColor, 20%)
+            HoverColor: =RGBA(255, 255, 255, 1)
+            HoverFill: =ColorFade(RGBA(56, 96, 178, 1), -20%)
+            OnSelect: =Navigate(scrHome)
+            PressedBorderColor: =Self.Fill
+            PressedColor: =Self.Fill
+            PressedFill: =Self.Color
+            Text: ="返回清單"
+            X: =120
+            Y: |+
+              =470
+      - btnEdit:
+          Control: Classic/Button@2.2.0
+          Properties:
+            BorderColor: =ColorFade(Self.Fill, -15%)
+            Color: =RGBA(255, 255, 255, 1)
+            DisabledBorderColor: =RGBA(166, 166, 166, 1)
+            Fill: =RGBA(56, 96, 178, 1)
+            Font: =Font.'Open Sans'
+            HoverBorderColor: =ColorFade(Self.BorderColor, 20%)
+            HoverColor: =RGBA(255, 255, 255, 1)
+            HoverFill: =ColorFade(RGBA(56, 96, 178, 1), -20%)
+            OnSelect: =Navigate(scrForm)
+            PressedBorderColor: =Self.Fill
+            PressedColor: =Self.Fill
+            PressedFill: =Self.Color
+            Text: ="編輯"
+            Visible: =varPermit.Status in ["Draft", "Submitted"]
+            X: =400
+            Y: =410
+      - btnReject:
+          Control: Classic/Button@2.2.0
+          Properties:
+            BorderColor: =ColorFade(Self.Fill, -15%)
+            Color: =RGBA(255, 255, 255, 1)
+            DisabledBorderColor: =RGBA(166, 166, 166, 1)
+            Fill: =RGBA(56, 96, 178, 1)
+            Font: =Font.'Open Sans'
+            HoverBorderColor: =ColorFade(Self.BorderColor, 20%)
+            HoverColor: =RGBA(255, 255, 255, 1)
+            HoverFill: =ColorFade(RGBA(56, 96, 178, 1), -20%)
+            OnSelect: |-
+              =If(
+                  IsBlank(txtComment.Text),
+                      Notify("退件請填寫原因", NotificationType.Error),
+                  Patch(StatusLog, Defaults(StatusLog), {
+                      Title: "WP-" & Text(varPermit.ID, "0000"),
+                      FromStatus: varPermit.Status,
+                      ToStatus: "Rejected",
+                      Comment: txtComment.Text
+                  });
+                  Set(varPermit, Patch(WorkPermits, varPermit, {Status: "Rejected"}));
+                  Reset(txtComment)
+              )
+            PressedBorderColor: =Self.Fill
+            PressedColor: =Self.Fill
+            PressedFill: =Self.Color
+            Text: ="退件"
+            Visible: =varPermit.Status in ["Submitted", "EHS Review"]
+            X: =220
+            Y: =410
+      - btnNext:
+          Control: Classic/Button@2.2.0
+          Properties:
+            BorderColor: =ColorFade(Self.Fill, -15%)
+            Color: =RGBA(255, 255, 255, 1)
+            DisabledBorderColor: =RGBA(166, 166, 166, 1)
+            DisplayMode: =If(varPermit.Status = "EHS Review" && varPermit.SafetyChecklist <> "Yes", DisplayMode.Disabled, DisplayMode.Edit)
+            Fill: =RGBA(56, 96, 178, 1)
+            Font: =Font.'Open Sans'
+            HoverBorderColor: =ColorFade(Self.BorderColor, 20%)
+            HoverColor: =RGBA(255, 255, 255, 1)
+            HoverFill: =ColorFade(RGBA(56, 96, 178, 1), -20%)
+            OnSelect: |-
+              =Set(varNext, Switch(varPermit.Status,
+                  "Draft", "Submitted",
+                  "Submitted", "EHS Review",
+                  "EHS Review", "Approved",
+                  "Approved", "In Progress",
+                  "In Progress", "Closed"
+              ));
+              Patch(StatusLog, Defaults(StatusLog), {
+                  Title: "WP-" & Text(varPermit.ID, "0000"),
+                  FromStatus: varPermit.Status,
+                  ToStatus: varNext,
+                  Comment: txtComment.Text
+              });
+              Set(varPermit, Patch(WorkPermits, varPermit, {Status: varNext}));
+              Reset(txtComment)
+            PressedBorderColor: =Self.Fill
+            PressedColor: =Self.Fill
+            PressedFill: =Self.Color
+            Text: =     Switch(varPermit.Status, "Draft", "送出申請", "Submitted", "開始審核", "EHS Review", "核准", "Approved", "開工", "In Progress", "結案", "")
+            Visible: =varPermit.Status in ["Draft", "Submitted", "EHS Review", "Approved", "In Progress"]
+            X: =40
+            Y: =410
+      - txtComment:
+          Control: Classic/TextInput@2.3.2
+          Properties:
+            BorderColor: =RGBA(0, 18, 107, 1)
+            Default: =""
+            Font: =Font.'Open Sans'
+            Height: |+
+              =60
+            HintText: ="備註（退件時必填）"
+            HoverBorderColor: =RGBA(0, 18, 107, 1)
+            HoverFill: =RGBA(186, 202, 226, 1)
+            Width: =560
+            X: =40
+            Y: =350
+      - lblInfo:
+          Control: Label@2.5.1
+          Properties:
+            BorderColor: =RGBA(0, 18, 107, 1)
+            Font: =Font.'Open Sans'
+            Height: |+
+              =200
+            Text: |-
+              ="承包商：" & varPermit.Contractor & Char(10) &
+              "施工區域：" & varPermit.Area & Char(10) &
+              "作業類型：" & varPermit.WorkType & "（風險：" & varPermit.RiskLevel & "）" & Char(10) &
+              "施工期間：" & Text(varPermit.StartDate, "yyyy/mm/dd") & " – " & Text(varPermit.EndDate, "yyyy/mm/dd") & Char(10) &
+              "施工人數：" & varPermit.Workers & Char(10) &
+              "安全檢查表：" & varPermit.SafetyChecklist
+            Width: =560
+            X: =40
+            Y: =130
+      - lblDetailStatus:
+          Control: Label@2.5.1
+          Properties:
+            Align: =Align.Center
+            BorderColor: =RGBA(0, 18, 107, 1)
+            Color: =Color.White
+            Fill: |-
+              =Switch(varPermit.Status,
+                  "Approved", RGBA(16, 124, 16, 1),
+                  "In Progress", RGBA(0, 120, 212, 1),
+                  "Rejected", RGBA(196, 43, 28, 1),
+                  "Closed", RGBA(96, 94, 92, 1),
+                  RGBA(202, 80, 16, 1)
+              )
+            Font: =Font.'Open Sans'
+            Height: =32
+            Text: =varPermit.Status
+            Width: =140
+            X: =40
+            Y: |+
+              =80
+      - lblDetailTitle:
+          Control: Label@2.5.1
+          Properties:
+            BorderColor: =RGBA(0, 18, 107, 1)
+            Font: =Font.'Open Sans'
+            Size: =20
+            Text: ="WP-" & Text(varPermit.ID, "0000") & "  " & varPermit.Title
+            Width: =560
+            X: =40
+            Y: =30
+      - galHistory:
+          Control: Gallery@2.15.0
+          Variant: BrowseLayout_Vertical_TwoTextOneImageVariant_ver5.0
+          Properties:
+            BorderColor: =RGBA(0, 18, 107, 1)
+            Height: =Parent.Height - 120
+            Items: =Sort(Filter(StatusLog, Title = "WP-" & Text(varPermit.ID, "0000")), Created, SortOrder.Descending)
+            TemplateSize: =70
+            Width: =Parent.Width - 680
+            X: =640
+            Y: |+
+              =80
+          Children:
+            - Title2:
+                Control: Label@2.5.1
+                Properties:
+                  BorderColor: =RGBA(0, 0, 0, 1)
+                  Color: =RGBA(50, 49, 48, 1)
+                  Font: =Font.'Open Sans'
+                  FontWeight: =If(ThisItem.IsSelected, FontWeight.Semibold, FontWeight.Normal)
+                  Height: =26
+                  OnSelect: =Select(Parent)
+                  PaddingBottom: =0
+                  PaddingLeft: =0
+                  PaddingRight: =0
+                  PaddingTop: =0
+                  Size: =14
+                  Text: =ThisItem.'建立者'.DisplayName & "：" & ThisItem.Comment
+                  VerticalAlign: =VerticalAlign.Top
+                  Width: =Parent.TemplateWidth - 32
+                  X: =16
+                  Y: =36
+            - Subtitle2:
+                Control: Label@2.5.1
+                Properties:
+                  BorderColor: =RGBA(0, 0, 0, 1)
+                  Font: =Font.'Open Sans'
+                  FontWeight: =If(ThisItem.IsSelected, FontWeight.Semibold, FontWeight.Normal)
+                  Height: =26
+                  OnSelect: =Select(Parent)
+                  PaddingBottom: =0
+                  PaddingLeft: =0
+                  PaddingRight: =0
+                  PaddingTop: =0
+                  Size: =12
+                  Text: =Text(ThisItem.Created, "yyyy/mm/dd hh:mm") & "  " & ThisItem.FromStatus & " → " & ThisItem.ToStatus
+                  VerticalAlign: =VerticalAlign.Top
+                  Width: =Parent.TemplateWidth - 32
+                  X: =16
+                  Y: =8

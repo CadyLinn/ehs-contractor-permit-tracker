@@ -1,0 +1,18 @@
+model Model
+	culture: zh-TW
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	sourceQueryCulture: zh-TW
+	dataAccessOptions
+		legacyRedirects
+		returnErrorValuesAsNull
+
+annotation PBI_QueryOrder = ["WorkPermits","Contractors","StatusLog"]
+
+annotation PBI_ProTooling = ["DevMode"]
+
+ref table WorkPermits
+ref table Contractors
+ref table StatusLog
+
+ref cultureInfo zh-TW
+

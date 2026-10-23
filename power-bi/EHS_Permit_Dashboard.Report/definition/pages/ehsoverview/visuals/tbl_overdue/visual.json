@@ -1,0 +1,240 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.13.0/schema.json",
+  "name": "tbl_overdue",
+  "position": {
+    "x": 24,
+    "y": 492,
+    "z": 10,
+    "height": 212,
+    "width": 612,
+    "tabOrder": 10
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "WorkPermits"
+                    }
+                  },
+                  "Property": "PermitNo"
+                }
+              },
+              "queryRef": "WorkPermits.PermitNo",
+              "nativeQueryRef": "PermitNo",
+              "displayName": "編號"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "WorkPermits"
+                    }
+                  },
+                  "Property": "Title"
+                }
+              },
+              "queryRef": "WorkPermits.Title",
+              "nativeQueryRef": "Title",
+              "displayName": "工程內容"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "WorkPermits"
+                    }
+                  },
+                  "Property": "Contractor"
+                }
+              },
+              "queryRef": "WorkPermits.Contractor",
+              "nativeQueryRef": "Contractor",
+              "displayName": "承包商"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "WorkPermits"
+                    }
+                  },
+                  "Property": "Status"
+                }
+              },
+              "queryRef": "WorkPermits.Status",
+              "nativeQueryRef": "Status",
+              "displayName": "狀態"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "WorkPermits"
+                    }
+                  },
+                  "Property": "EndDate"
+                }
+              },
+              "queryRef": "WorkPermits.EndDate",
+              "nativeQueryRef": "EndDate",
+              "displayName": "預定結束"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "WorkPermits"
+                    }
+                  },
+                  "Property": "Days Overdue"
+                }
+              },
+              "queryRef": "WorkPermits.Days Overdue",
+              "nativeQueryRef": "Days Overdue",
+              "displayName": "逾期天數"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Measure": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "WorkPermits"
+                  }
+                },
+                "Property": "Days Overdue"
+              }
+            },
+            "direction": "Descending"
+          }
+        ]
+      }
+    },
+    "drillFilterOtherVisuals": true,
+    "visualContainerObjects": {
+      "background": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "color": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#FFFFFF'"
+                    }
+                  }
+                }
+              }
+            },
+            "transparency": {
+              "expr": {
+                "Literal": {
+                  "Value": "0D"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "border": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "color": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#D9DEE7'"
+                    }
+                  }
+                }
+              }
+            },
+            "radius": {
+              "expr": {
+                "Literal": {
+                  "Value": "10D"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'逾期未結案的申請'"
+                }
+              }
+            },
+            "fontColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#1F3A5F'"
+                    }
+                  }
+                }
+              }
+            },
+            "bold": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "12D"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

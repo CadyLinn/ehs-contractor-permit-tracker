@@ -1,0 +1,153 @@
+# ************************************************************************************************
+# Warning: YAML source code for Canvas Apps should only be used to review changes made within Power Apps Studio and for minor edits (Preview).
+# Use the maker portal to create and edit your Power Apps.
+# 
+# The schema file for Canvas Apps is available at https://go.microsoft.com/fwlink/?linkid=2304907
+# 
+# For more information, visit https://go.microsoft.com/fwlink/?linkid=2292623
+# ************************************************************************************************
+Screens:
+  scrHome:
+    Properties:
+      LoadingSpinnerColor: =RGBA(56, 96, 178, 1)
+    Children:
+      - drpStatus:
+          Control: Classic/DropDown@2.3.1
+          Properties:
+            BorderColor: =RGBA(0, 18, 107, 1)
+            ChevronBackground: =RGBA(56, 96, 178, 1)
+            ChevronFill: =RGBA(255, 255, 255, 1)
+            ChevronHoverBackground: =ColorFade(RGBA(56, 96, 178, 1), -20%)
+            ChevronHoverFill: =RGBA(255, 255, 255, 1)
+            Default: ="All"
+            Font: =Font.'Open Sans'
+            HoverFill: =RGBA(186, 202, 226, 1)
+            Items: =["All","Draft","Submitted","EHS Review","Approved","In Progress","Closed","Rejected"]
+            Items.Value: =Value
+            PressedColor: =RGBA(255, 255, 255, 1)
+            PressedFill: =RGBA(0, 18, 107, 1)
+            SelectionColor: =RGBA(255, 255, 255, 1)
+            SelectionFill: =RGBA(56, 96, 178, 1)
+            Width: =200
+            X: =380
+            Y: =40
+      - txtSearch:
+          Control: Classic/TextInput@2.3.2
+          Properties:
+            BorderColor: =RGBA(0, 18, 107, 1)
+            Default: =
+            Font: =Font.'Open Sans'
+            HintText: ="搜尋承包商或工程內容"
+            HoverBorderColor: =RGBA(0, 18, 107, 1)
+            HoverFill: =RGBA(186, 202, 226, 1)
+            X: =40
+            Y: =40
+      - btnNew:
+          Control: Classic/Button@2.2.0
+          Properties:
+            BorderColor: =ColorFade(Self.Fill, -15%)
+            Color: =RGBA(255, 255, 255, 1)
+            DisabledBorderColor: =RGBA(166, 166, 166, 1)
+            Fill: =RGBA(56, 96, 178, 1)
+            Font: =Font.'Open Sans'
+            HoverBorderColor: =ColorFade(Self.BorderColor, 20%)
+            HoverColor: =RGBA(255, 255, 255, 1)
+            HoverFill: =ColorFade(RGBA(56, 96, 178, 1), -20%)
+            OnSelect: =Set(varPermit, Blank()); Navigate(scrForm)
+            PressedBorderColor: =Self.Fill
+            PressedColor: =Self.Fill
+            PressedFill: =Self.Color
+            Text: ="新增申請"
+            X: =600
+            Y: =40
+      - galPermits:
+          Control: Gallery@2.15.0
+          Variant: BrowseLayout_Vertical_TwoTextOneImageVariant_ver5.0
+          Properties:
+            BorderColor: =RGBA(0, 18, 107, 1)
+            Height: =Parent.Height - 130
+            Items: |-
+              =Sort(
+                  Filter(
+                      WorkPermits,
+                      (drpStatus.Selected.Value = "All" || Status = drpStatus.Selected.Value) &&
+                      (IsBlank(txtSearch.Text) || StartsWith(Contractor, txtSearch.Text) || StartsWith(Title, txtSearch.Text))
+                  ),
+                  StartDate,
+                  SortOrder.Descending
+              )
+            OnSelect: =Set(varPermit, ThisItem); Navigate(scrDetail)
+            TemplateSize: =80
+            Width: =Parent.Width - 80
+            X: =40
+            Y: =110
+          Children:
+            - lblOverdue:
+                Control: Label@2.5.1
+                Properties:
+                  BorderColor: =RGBA(0, 18, 107, 1)
+                  Color: =  Color.Red
+                  Font: =Font.'Open Sans'
+                  Height: =30
+                  OnSelect: =Select(Parent)
+                  Text: ="逾期未結案"
+                  Visible: =ThisItem.EndDate < Today() && !(ThisItem.Status in ["Closed","Rejected"])
+                  Width: =120
+                  X: =Parent.TemplateWidth - 270
+                  Y: =42
+            - lblStatus:
+                Control: Label@2.5.1
+                Properties:
+                  Align: =Align.Center
+                  BorderColor: =RGBA(0, 18, 107, 1)
+                  Color: =Color.White
+                  Fill: |-
+                    =Switch(ThisItem.Status,
+                        "Approved", RGBA(16, 124, 16, 1),
+                        "In Progress", RGBA(0, 120, 212, 1),
+                        "Rejected", RGBA(196, 43, 28, 1),
+                        "Closed", RGBA(96, 94, 92, 1),
+                        RGBA(202, 80, 16, 1)
+                    )
+                  Font: =Font.'Open Sans'
+                  Height: =30
+                  OnSelect: =Select(Parent)
+                  Text: = ThisItem.Status
+                  Width: =120
+                  X: =Parent.TemplateWidth - 270
+                  Y: =8
+            - lblDates:
+                Control: Label@2.5.1
+                Properties:
+                  BorderColor: =RGBA(0, 18, 107, 1)
+                  Font: =Font.'Open Sans'
+                  Height: =30
+                  OnSelect: =Select(Parent)
+                  Text: =Text(ThisItem.StartDate, "yyyy/mm/dd") & " – " & Text(ThisItem.EndDate, "yyyy/mm/dd")
+                  Width: =Parent.TemplateWidth - 420
+                  X: =130
+                  Y: =42
+            - lblTitle:
+                Control: Label@2.5.1
+                Properties:
+                  BorderColor: =RGBA(0, 18, 107, 1)
+                  Font: =Font.'Open Sans'
+                  Height: =30
+                  OnSelect: =Select(Parent)
+                  Text: =ThisItem.Title & "｜" & ThisItem.Contractor
+                  Width: =Parent.TemplateWidth - 420
+                  X: =130
+                  Y: |-
+                    =
+                    8
+            - lblNo:
+                Control: Label@2.5.1
+                Properties:
+                  BorderColor: =RGBA(0, 18, 107, 1)
+                  Font: =Font.'Open Sans'
+                  Height: =30
+                  OnSelect: =Select(Parent)
+                  Text: ="WP-" & Text(ThisItem.ID, "0000")
+                  Width: =Parent.TemplateWidth - 420
+                  X: =16
+                  Y: =8

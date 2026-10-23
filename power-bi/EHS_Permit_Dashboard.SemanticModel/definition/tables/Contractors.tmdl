@@ -1,0 +1,65 @@
+table Contractors
+	lineageTag: e3c8a860-50f9-4cc7-997a-51f71862b12f
+
+	measure 'Expired Training Contractors' = CALCULATE ( COUNTROWS ( Contractors ), Contractors[SafetyTrainingExpiry] < TODAY () )
+		formatString: 0
+		lineageTag: b1394b53-9484-4c57-952d-ca07a3495501
+
+	measure 'Training Status' =
+			VAR d = MAX ( Contractors[SafetyTrainingExpiry] )
+			RETURN
+			    SWITCH ( TRUE (), ISBLANK ( d ), BLANK (), d < TODAY (), "已過期", d <= TODAY () + 30, "30 天內到期", "有效" )
+		lineageTag: fc3359fb-5008-422d-b746-d24ca13583ce
+
+	column Title
+		dataType: string
+		lineageTag: c037f48a-b712-4463-b7d8-73ae5b1b7431
+		summarizeBy: none
+		sourceColumn: Title
+
+	column ContactPerson
+		dataType: string
+		lineageTag: 0a5a2c07-66a3-4eb3-a662-fb30a555493e
+		summarizeBy: none
+		sourceColumn: ContactPerson
+
+	column Phone
+		dataType: string
+		lineageTag: 3b6d03f6-c8c9-43bc-92b2-d9184e00e83e
+		summarizeBy: none
+		sourceColumn: Phone
+
+	column SafetyTrainingExpiry
+		dataType: dateTime
+		formatString: yyyy/mm/dd
+		lineageTag: 29a3276f-2948-48b7-9a4b-5d9baceaa238
+		summarizeBy: none
+		sourceColumn: SafetyTrainingExpiry
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column InsuranceExpiry
+		dataType: dateTime
+		formatString: yyyy/mm/dd
+		lineageTag: 2029c587-4afd-4a95-ae02-d1599787a32a
+		summarizeBy: none
+		sourceColumn: InsuranceExpiry
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	partition Contractors = m
+		mode: import
+		source =
+				let
+				    Source = SharePoint.Tables("https://YOUR-TENANT.sharepoint.com/sites/YOUR-SITE", [ApiVersion = 15]),
+				    Items = Source{[Title = "Contractors"]}[Items],
+				    Named = Table.RenameColumns(Items, {{"field_1", "ContactPerson"}, {"field_2", "Phone"}, {"field_3", "SafetyTrainingExpiry"}, {"field_4", "InsuranceExpiry"}}, MissingField.Ignore),
+				    Picked = Table.SelectColumns(Named, {"Title", "ContactPerson", "Phone", "SafetyTrainingExpiry", "InsuranceExpiry"}, MissingField.UseNull),
+				    ToLocalDate = (v) => if v = null then null else Date.From(DateTimeZone.SwitchZone(DateTime.AddZone(DateTime.From(v), 0), 8)),
+				    Dated = Table.TransformColumns(Picked, {{"SafetyTrainingExpiry", ToLocalDate, type date}, {"InsuranceExpiry", ToLocalDate, type date}}),
+				    Typed = Table.TransformColumnTypes(Dated, {{"Title", type text}, {"ContactPerson", type text}, {"Phone", type text}})
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table
+

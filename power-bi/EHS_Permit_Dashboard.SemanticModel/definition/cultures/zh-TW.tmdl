@@ -1,0 +1,368 @@
+cultureInfo zh-TW
+
+	linguisticMetadata =
+			{
+			  "Version": "2.0.0",
+			  "Language": "en-US",
+			  "Entities": {
+			    "workpermits.area": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "WorkPermits",
+			          "ConceptualProperty": "Area"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "施工區域": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "workpermits.risklevel": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "WorkPermits",
+			          "ConceptualProperty": "RiskLevel"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "風險等級": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "workpermits.permit_count": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "WorkPermits",
+			          "ConceptualProperty": "Permit Count"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "申請數": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "workpermits.active_permits": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "WorkPermits",
+			          "ConceptualProperty": "Active Permits"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "施工中與已核准": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "workpermits.pending_review": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "WorkPermits",
+			          "ConceptualProperty": "Pending Review"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "待審核": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "workpermits.overdue_permits": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "WorkPermits",
+			          "ConceptualProperty": "Overdue Permits"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "逾期未結案": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "workpermits.highrisk_work_today": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "WorkPermits",
+			          "ConceptualProperty": "High-Risk Work Today"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "今日高風險作業": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "workpermits.status": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "WorkPermits",
+			          "ConceptualProperty": "Status"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "狀態": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "workpermits.worktype": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "WorkPermits",
+			          "ConceptualProperty": "WorkType"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "作業類型": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "workpermits.permitno": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "WorkPermits",
+			          "ConceptualProperty": "PermitNo"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "編號": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "workpermits.title": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "WorkPermits",
+			          "ConceptualProperty": "Title"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "工程內容": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "workpermits.contractor": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "WorkPermits",
+			          "ConceptualProperty": "Contractor"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "承包商": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "workpermits.enddate": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "WorkPermits",
+			          "ConceptualProperty": "EndDate"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "預定結束": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "workpermits.days_overdue": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "WorkPermits",
+			          "ConceptualProperty": "Days Overdue"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "逾期天數": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "contractors.title": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Contractors",
+			          "ConceptualProperty": "Title"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "承包商": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "contractors.safetytrainingexpiry": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Contractors",
+			          "ConceptualProperty": "SafetyTrainingExpiry"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "安全訓練到期日": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "contractors.training_status": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Contractors",
+			          "ConceptualProperty": "Training Status"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "訓練狀態": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    }
+			  }
+			}
+		contentType: json
+
