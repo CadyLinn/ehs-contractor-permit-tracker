@@ -10,6 +10,12 @@ Built as a personal portfolio project on Microsoft 365 (university tenant). All 
 | **Status audit trail** | **Power BI EHS dashboard** |
 | ![Status audit trail](docs/screenshots/3-status-audit-trail.png) | ![Power BI dashboard](docs/screenshots/4-power-bi-dashboard.png) |
 
+### Running inside Microsoft Teams
+
+| Permit list in Teams | EHS review step in Teams |
+|---|---|
+| ![Teams permit list](docs/screenshots/5-teams-permit-list.png) | ![Teams EHS review](docs/screenshots/6-teams-ehs-review.png) |
+
 ## What it does
 
 **Power Apps canvas app** (also embedded in Microsoft Teams)
