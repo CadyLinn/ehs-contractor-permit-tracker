@@ -4,6 +4,8 @@ A **Power Apps + SharePoint + Power BI** solution for tracking contractor constr
 
 Built as a personal portfolio project on Microsoft 365 (university tenant). All contractors and permits are **fictional sample data**.
 
+▶ **[Demo video (1 min)](https://youtu.be/m0PH4x4QTc8)**: one hot-work permit (WP-0031) from request through approval to close.
+
 | Permit list | New permit form |
 |---|---|
 | ![Permit list](docs/screenshots/1-permit-list.png) | ![New permit form](docs/screenshots/2-new-permit-form.png) |
